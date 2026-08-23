@@ -48,6 +48,38 @@ async function initNav() {
 
   initDarkModeToggle(authSlot);
   injectBottomTabs(user, current);
+  initHamburgerMenu();
+}
+
+// ---------- Hamburger menu (dashes -> tap -> partial-screen panel) ----------
+function initHamburgerMenu() {
+  const navbar = document.querySelector('.navbar');
+  const navEl = document.querySelector('.navbar nav');
+  if (!navbar || !navEl || document.querySelector('.hamburger-btn')) return;
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nav-backdrop';
+  document.body.appendChild(backdrop);
+
+  const hamburger = document.createElement('button');
+  hamburger.className = 'hamburger-btn';
+  hamburger.setAttribute('aria-label', 'Menu');
+  hamburger.innerHTML = '&#9776;'; // ≡ three dashes
+  navbar.appendChild(hamburger);
+
+  function closeMenu() {
+    navEl.classList.remove('nav-open');
+    backdrop.classList.remove('show');
+  }
+  function openMenu() {
+    navEl.classList.add('nav-open');
+    backdrop.classList.add('show');
+  }
+  hamburger.addEventListener('click', () => {
+    navEl.classList.contains('nav-open') ? closeMenu() : openMenu();
+  });
+  backdrop.addEventListener('click', closeMenu);
+  navEl.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 }
 
 // ---------- Dark mode ----------
