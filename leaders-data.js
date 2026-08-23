@@ -14,6 +14,10 @@ const EXCO = [
       scripture: 'Being confident of this, that He who began a good work in you will carry it on to completion until the day of Christ Jesus.',
       scriptureRef: 'Philippians 1:6',
     } },
+  { position: 'Vice President 3 (UBTH)', name: 'Dioru Oghenerukevwe', photo: '',
+    bio: {
+      roleDescription: 'Elected from any UBTH school, oversees day-to-day activities and welfare of students in UBTH schools, and resides in UBTH hostels or environs.',
+    } },
   { position: 'General Secretary', name: 'Oghenevwogaga Blessing', photo: '', phone: '+2349159234422' },
   { position: 'Assistant General Secretary', name: 'Marvellous Oghenerukome Udoko', photo: 'leader-ags.png', phone: '+2348084734611',
     bio: {
@@ -81,6 +85,5 @@ const COORDINATORS = [
   { role: 'Female Hall Representative', lead: 'Laba Dorcas', leadPhoto: 'leader-hall-rep-female.jpg', asst: 'Deborah', asstPhoto: '' },
   { role: 'BDPA Coordinator', lead: 'Ebelo Goodness', leadPhoto: '', asst: 'Legacy', asstPhoto: '' },
   { role: 'Ekosodin Coordinator', lead: 'Chidubem Igwe', leadPhoto: '', asst: 'Emmanuel Ogheneyole', asstPhoto: '' },
-  { role: 'UBTH Coordinator', lead: 'Oluru Oghenerukevwe', leadPhoto: '', asst: '', asstPhoto: '' },
   { role: 'Ekhuewan Coordinator', lead: 'Thankgod Omuzuapo', leadPhoto: '', asst: '', asstPhoto: '' },
 ];

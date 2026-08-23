@@ -2,6 +2,7 @@ const ROLE_DESCRIPTIONS = {
   'President': 'Head of the entire ASF Uniben/UBTH fellowship \u2014 not just the EXCO chairman, but the overall leader of the fellowship, responsible for directing meetings, coordinating all activities, and representing ASF within and outside campus.',
   'Vice President 1 (Ekehuan)': 'Supervises and coordinates fellowship activities in Ekehuan Campus.',
   'Vice President 2 (Ugbowo)': 'Supervises activities in Ugbowo Campus and coordinates the Ministry Groups.',
+  'Vice President 3 (UBTH)': 'Elected from any UBTH school, oversees day-to-day activities and welfare of students in UBTH schools.',
   'General Secretary': 'Runs the Secretariat \u2014 summons meetings, takes minutes, handles correspondence.',
   'Assistant General Secretary': 'Assists the GS with secretariat duties and ensures registration of new members.',
   'Treasurer': 'Collects funds, issues receipts, and banks fellowship money.',

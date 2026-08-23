@@ -97,17 +97,39 @@ function groupFlipCardHtml(cardId, title, lead, leadPhoto, asst, asstPhoto) {
   `;
 }
 
-document.getElementById('exco-list').innerHTML = EXCO
-  .map((p, i) => flipCardHtml(`exco-${i}`, p.position, p.name, p.photo, p.phone, p.bio))
+// Split EXCO at the boundary after Assistant General Secretary:
+// President -> AGS is "Central Executive"; everyone after AGS is "Executives".
+const agsIndex = EXCO.findIndex((p) => p.position === 'Assistant General Secretary');
+const centralExecutive = EXCO.slice(0, agsIndex + 1);
+const executives = EXCO.slice(agsIndex + 1);
+
+document.getElementById('central-executive-list').innerHTML = centralExecutive
+  .map((p, i) => flipCardHtml(`ce-${i}`, p.position, p.name, p.photo, p.phone, p.bio))
+  .join('');
+
+document.getElementById('executives-list').innerHTML = executives
+  .map((p, i) => flipCardHtml(`ex-${i}`, p.position, p.name, p.photo, p.phone, p.bio))
   .join('');
 
 document.getElementById('ministry-leaders-list').innerHTML = MINISTRY_LEADERS
   .map((m, i) => groupFlipCardHtml(`ml-${i}`, m.group, m.lead, m.leadPhoto, m.asst, m.asstPhoto))
   .join('');
 
-document.getElementById('coordinators-list').innerHTML = COORDINATORS
-  .map((c, i) => groupFlipCardHtml(`co-${i}`, c.role, c.lead, c.leadPhoto, c.asst, c.asstPhoto))
+document.getElementById('hall-reps-list').innerHTML = COORDINATORS
+  .map((c, i) => groupFlipCardHtml(`hr-${i}`, c.role, c.lead, c.leadPhoto, c.asst, c.asstPhoto))
   .join('');
+
+document.getElementById('hierarchy-structure').innerHTML = `
+  <p class="hint" style="margin:0 0 0.6rem;">How responsibility flows through the fellowship, top to bottom:</p>
+  <ol style="margin:0; padding-left:1.2rem;">
+    <li>President &mdash; oversees the entire fellowship</li>
+    <li>Vice Presidents (Ekehuan, Ugbowo, UBTH) &mdash; supervise their campus/hospital</li>
+    <li>General Secretary &amp; Assistant General Secretary &mdash; run the Secretariat and administration</li>
+    <li>Executives (Treasurer, Secretaries, etc.) &mdash; run their individual portfolios</li>
+    <li>Ministry Group Leaders &mdash; run their ministry group's activities</li>
+    <li>Hall Reps &amp; Coordinators &mdash; represent members in their hall or area</li>
+  </ol>
+`;
 
 document.querySelectorAll('.flip-card').forEach((card) => {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
