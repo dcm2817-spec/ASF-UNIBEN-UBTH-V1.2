@@ -73,7 +73,7 @@ a { color: inherit; }
   flex-direction: column;
   align-items: flex-start;
   gap: 0.15rem;
-  padding: 4.5rem 1.5rem 2rem;
+  padding: 1.25rem 1.5rem 2rem;
   overflow-y: auto;
   z-index: 300;
   transition: right 0.3s ease;
@@ -104,6 +104,22 @@ a { color: inherit; }
   line-height: 1;
   cursor: pointer;
   padding: 0.2rem 0.4rem;
+}
+
+.nav-close-btn {
+  align-self: flex-end;
+  border: none;
+  background: none;
+  color: var(--parchment);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+body.menu-open {
+  overflow: hidden;
 }
 
 .navbar nav > a {

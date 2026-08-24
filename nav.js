@@ -67,17 +67,26 @@ function initHamburgerMenu() {
   hamburger.innerHTML = '&#9776;'; // ≡ three dashes
   navbar.appendChild(hamburger);
 
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'nav-close-btn';
+  closeBtn.setAttribute('aria-label', 'Close menu');
+  closeBtn.innerHTML = '&#10005;'; // ✕
+  navEl.insertBefore(closeBtn, navEl.firstChild);
+
   function closeMenu() {
     navEl.classList.remove('nav-open');
     backdrop.classList.remove('show');
+    document.body.classList.remove('menu-open');
   }
   function openMenu() {
     navEl.classList.add('nav-open');
     backdrop.classList.add('show');
+    document.body.classList.add('menu-open');
   }
   hamburger.addEventListener('click', () => {
     navEl.classList.contains('nav-open') ? closeMenu() : openMenu();
   });
+  closeBtn.addEventListener('click', closeMenu);
   backdrop.addEventListener('click', closeMenu);
   navEl.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 }
