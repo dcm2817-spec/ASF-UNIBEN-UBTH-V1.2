@@ -1,6 +1,12 @@
 // Runs on every page. Expects the navbar markup with these ids to be present:
 // #nav-ministry, #nav-chat, #nav-admin, #nav-auth-slot
 async function initNav() {
+  // Guard against nav.js somehow running more than once on the same page
+  // (e.g. an accidental duplicate <script> tag) -- without this, the
+  // bottom tab bar and hamburger menu could each get created twice.
+  if (window.__asfNavInitialized) return;
+  window.__asfNavInitialized = true;
+
   const { data: { session } } = await sb.auth.getSession();
   const user = session ? session.user : null;
 
@@ -60,6 +66,7 @@ function injectHamburgerStyles() {
   const style = document.createElement('style');
   style.id = 'hamburger-inline-styles';
   style.textContent = `
+    .navbar { z-index: 310 !important; }
     .navbar nav {
       position: fixed !important;
       top: 0 !important;
