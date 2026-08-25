@@ -42,7 +42,7 @@ async function initNav() {
 
   // Highlight the current page's nav link
   const current = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.navbar nav a').forEach((a) => {
+  document.querySelectorAll('.navbar nav > a').forEach((a) => {
     if (a.getAttribute('href') === current) a.classList.add('active');
   });
 
@@ -52,7 +52,68 @@ async function initNav() {
 }
 
 // ---------- Hamburger menu (dashes -> tap -> partial-screen panel) ----------
+// Injects its own CSS so the menu works correctly even if style.css is out
+// of sync -- this has been the recurring real bug (JS and CSS uploaded out
+// of step with each other), so the menu no longer depends on style.css at all.
+function injectHamburgerStyles() {
+  if (document.getElementById('hamburger-inline-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'hamburger-inline-styles';
+  style.textContent = `
+    .navbar nav {
+      position: fixed !important;
+      top: 0 !important;
+      right: -85% !important;
+      width: 85% !important;
+      max-width: 320px !important;
+      height: 100vh !important;
+      background: var(--oxblood-dark, #4A0F0F) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.15rem !important;
+      padding: 1.25rem 1.5rem 2rem !important;
+      overflow-y: auto !important;
+      z-index: 300 !important;
+      transition: right 0.3s ease !important;
+      box-shadow: -6px 0 20px rgba(0,0,0,0.25) !important;
+      flex-wrap: nowrap !important;
+    }
+    .navbar nav.nav-open { right: 0 !important; }
+    .navbar nav > a {
+      width: 100% !important;
+      padding: 0.7rem 0 !important;
+      border-bottom: 1px solid rgba(251,246,238,0.08) !important;
+    }
+    .navbar nav > a.active {
+      color: var(--sunrise, #C9962F) !important;
+      background: rgba(201,150,47,0.1);
+      border-left: 3px solid var(--sunrise, #C9962F);
+      padding-left: 0.6rem !important;
+    }
+    .nav-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 280; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .nav-backdrop.show { opacity: 1; visibility: visible; }
+    .hamburger-btn {
+      border: none; background: none; color: var(--parchment, #FBF6EE);
+      font-size: 1.6rem; line-height: 1; cursor: pointer; padding: 0.2rem 0.4rem;
+      position: relative; z-index: 301;
+    }
+    .nav-close-btn {
+      align-self: flex-end; border: none; background: none;
+      color: var(--parchment, #FBF6EE); font-size: 1.4rem; line-height: 1;
+      cursor: pointer; padding: 0.3rem 0.5rem; margin-bottom: 0.5rem;
+    }
+    body.menu-open { overflow: hidden; }
+  `;
+  document.head.appendChild(style);
+}
+
 function initHamburgerMenu() {
+  injectHamburgerStyles();
   const navbar = document.querySelector('.navbar');
   const navEl = document.querySelector('.navbar nav');
   if (!navbar || !navEl || document.querySelector('.hamburger-btn')) return;
