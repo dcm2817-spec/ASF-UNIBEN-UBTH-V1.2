@@ -1,11 +1,21 @@
 // Runs on every page. Expects the navbar markup with these ids to be present:
 // #nav-ministry, #nav-chat, #nav-admin, #nav-auth-slot
+//
+// Pages can opt into a fully auto-built menu by using <nav data-nav-menu></nav>
+// (empty) instead of hand-writing every link -- see buildNavLinks() below.
+// Pages that still have their links written out by hand (or a custom
+// minimal nav, like Attendance's "Back" link) are left completely alone;
+// this is intentionally backward-compatible so migrating pages one at a
+// time carries no risk to the ones not yet migrated.
 async function initNav() {
   // Guard against nav.js somehow running more than once on the same page
   // (e.g. an accidental duplicate <script> tag) -- without this, the
   // bottom tab bar and hamburger menu could each get created twice.
   if (window.__asfNavInitialized) return;
   window.__asfNavInitialized = true;
+
+  buildNavLinks();
+  buildFooter();
 
   const { data: { session } } = await sb.auth.getSession();
   const user = session ? session.user : null;
@@ -160,6 +170,38 @@ function initHamburgerMenu() {
 }
 
 // ---------- Dark mode ----------
+// ---------- Auto-build the nav menu from nav-links.js, if this page opts in ----------
+function buildNavLinks() {
+  const navEl = document.querySelector('.navbar nav[data-nav-menu]');
+  if (!navEl || navEl.children.length > 0) return; // not opted in, or already built
+  if (typeof NAV_LINKS === 'undefined') {
+    console.warn('nav-links.js did not load -- falling back to whatever is already in the page.');
+    return;
+  }
+
+  NAV_LINKS.forEach((link) => {
+    const a = document.createElement('a');
+    a.href = link.href;
+    a.textContent = link.label;
+    if (link.id) {
+      a.id = link.id;
+      a.style.display = 'none'; // shown later once we know who's signed in
+    }
+    navEl.appendChild(a);
+  });
+
+  const authSlot = document.createElement('span');
+  authSlot.id = 'nav-auth-slot';
+  navEl.appendChild(authSlot);
+}
+
+// ---------- Auto-fill the footer text, if this page opts in ----------
+function buildFooter() {
+  const footerEl = document.querySelector('footer[data-auto-footer]');
+  if (!footerEl || footerEl.textContent.trim()) return;
+  footerEl.innerHTML = 'Anglican Students\u2019 Fellowship — Uniben / UBTH &middot; Arise, Shine!';
+}
+
 function initDarkModeToggle(authSlot) {
   const saved = localStorage.getItem('asf-theme');
   if (saved === 'dark') document.documentElement.classList.add('dark');
